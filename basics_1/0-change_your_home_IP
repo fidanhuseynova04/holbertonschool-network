@@ -4,14 +4,16 @@
 # Backup the current /etc/hosts file
 cp /etc/hosts /etc/hosts.bak
 
-# Modify /etc/hosts to resolve localhost to 127.0.0.2 and facebook.com to 8.8.8.8
-# Remove any existing entries for localhost and facebook.com to prevent duplicates
-sed -i '/localhost/d' /etc/hosts
-sed -i '/facebook.com/d' /etc/hosts
+# Manually remove any existing localhost and facebook.com entries
+grep -v 'localhost' /etc/hosts | grep -v 'facebook.com' > /tmp/hosts_tmp
 
-# Add new entries to /etc/hosts
-echo "127.0.0.2 localhost" >> /etc/hosts
-echo "8.8.8.8 facebook.com" >> /etc/hosts
+# Add the new entries to the temporary file
+echo "127.0.0.2 localhost" >> /tmp/hosts_tmp
+echo "8.8.8.8 facebook.com" >> /tmp/hosts_tmp
+
+# Move the temporary file back to /etc/hosts
+mv /tmp/hosts_tmp /etc/hosts
 
 echo "IP addresses for localhost and facebook.com have been updated."
+
 
